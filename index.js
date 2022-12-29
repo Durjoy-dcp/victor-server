@@ -39,7 +39,15 @@ async function run() {
         // user: email
         isComplete: false,
       };
-      const result = await tasks.find(query).toArray();
+      const result = await (await tasks.find(query).toArray()).reverse();
+      res.send(result);
+    });
+    app.get("/completed", async (req, res) => {
+      const email = req.query.email;
+      const query = {
+        isComplete: true,
+      };
+      const result = await (await tasks.find(query).toArray()).reverse();
       res.send(result);
     });
     app.patch("/completed", async (req, res) => {
@@ -48,6 +56,19 @@ async function run() {
       const updateDoc = {
         $set: {
           isComplete: true,
+        },
+      };
+      const result = await tasks.updateOne(filter, updateDoc);
+      res.send(result);
+      console.log(result);
+      console.log(id);
+    });
+    app.patch("/notcompleted", async (req, res) => {
+      const id = req.query.id;
+      const filter = { _id: ObjectId(id) };
+      const updateDoc = {
+        $set: {
+          isComplete: false,
         },
       };
       const result = await tasks.updateOne(filter, updateDoc);
