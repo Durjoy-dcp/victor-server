@@ -55,6 +55,25 @@ async function run() {
       console.log(result);
       console.log(id);
     });
+    app.patch("/update/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: ObjectId(id) };
+      const updateDoc = {
+        $set: {
+          title: req.body.title,
+          details: req.body.details,
+        },
+      };
+      const result = await tasks.updateOne(filter, updateDoc);
+      res.send(result);
+    });
+    app.delete("/delete/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: ObjectId(id) };
+      const result = await tasks.deleteOne(filter);
+      console.log(result);
+      res.send(result);
+    });
   } finally {
   }
 }
