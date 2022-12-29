@@ -27,9 +27,17 @@ async function run() {
   try {
     const database = client.db("victor-task-manager");
     const tasks = database.collection("task");
+    const imgs = database.collection("imgs");
     app.post("/insert", async (req, res) => {
       const task = req.body;
       const result = await tasks.insertOne(task);
+      console.log(result);
+      res.send(result);
+    });
+    app.post("/insertpic", async (req, res) => {
+      const task = req.body;
+      console.log(task);
+      const result = await imgs.insertOne(task);
       console.log(result);
       res.send(result);
     });
