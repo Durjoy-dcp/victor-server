@@ -34,21 +34,23 @@ async function run() {
       res.send(result);
     });
     app.get("/mytasks", async (req, res) => {
-      const email = req.query.email;
+      const email = req.query.user;
+      console.log(email);
       const query = {
-        // user: email
+        user: email,
         isComplete: false,
       };
-      const result = await (await tasks.find(query).toArray()).reverse();
-      res.send(result);
+      const result = await tasks.find(query).toArray();
+      res.send(result.reverse());
     });
     app.get("/completed", async (req, res) => {
-      const email = req.query.email;
+      const email = req.query.user;
       const query = {
+        user: email,
         isComplete: true,
       };
-      const result = await (await tasks.find(query).toArray()).reverse();
-      res.send(result);
+      const result = await tasks.find(query).toArray();
+      res.send(result.reverse());
     });
     app.patch("/completed", async (req, res) => {
       const id = req.query.id;
