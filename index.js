@@ -51,6 +51,15 @@ async function run() {
       const result = await tasks.find(query).toArray();
       res.send(result.reverse());
     });
+    app.get("/mymedia", async (req, res) => {
+      const email = req.query.user;
+      const query = {
+        user: email,
+      };
+      const result = await imgs.find(query).toArray();
+      res.send(result.reverse());
+    });
+
     app.get("/completed", async (req, res) => {
       const email = req.query.user;
       const query = {
@@ -93,6 +102,17 @@ async function run() {
         $set: {
           title: req.body.title,
           details: req.body.details,
+        },
+      };
+      const result = await tasks.updateOne(filter, updateDoc);
+      res.send(result);
+    });
+    app.patch("/comment/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: ObjectId(id) };
+      const updateDoc = {
+        $set: {
+          comment: req.body.comment,
         },
       };
       const result = await tasks.updateOne(filter, updateDoc);
